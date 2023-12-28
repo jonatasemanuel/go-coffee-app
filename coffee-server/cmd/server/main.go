@@ -8,6 +8,8 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/jonatasemanuel/coffee-server/db"
+	"github.com/jonatasemanuel/coffee-server/router"
+	"github.com/jonatasemanuel/coffee-server/services"
 )
 
 type Config struct {
@@ -16,7 +18,7 @@ type Config struct {
 
 type Application struct {
 	Config Config
-	// Models
+	Models services.Models
 }
 
 func (app *Application) Serve() error {
@@ -28,8 +30,8 @@ func (app *Application) Serve() error {
 	fmt.Println("API is listening on port:", port)
 
 	srv := &http.Server{
-		Addr: fmt.Sprintf(":%s", port),
-		// add router
+		Addr:    fmt.Sprintf(":%s", port),
+		Handler: router.Routes(),
 	}
 
 	return srv.ListenAndServe()
@@ -54,7 +56,7 @@ func main() {
 
 	app := &Application{
 		Config: cfg,
-		// TODO: add models later
+		Models: services.New(dbConn.DB),
 	}
 	err = app.Serve()
 	if err != nil {
