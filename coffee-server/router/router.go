@@ -22,7 +22,10 @@ func Routes() http.Handler {
 	}))
 
 	router.Get("/api/v1/coffees", controllers.GetAllCoffees)
+	router.Get("/api/v1/coffees/{id}", controllers.GetCoffeeById)
 	router.Post("/api/v1/coffees/new", controllers.CreateCoffe)
+	router.Put("/api/v1/coffees/{id}", controllers.UpdateCoffee)
+	router.Delete("/api/v1/coffees/{id}", controllers.DeleteCoffee)
 
 	return router
 }
